@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Mitochondrion Toolkit</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- jQuery (CDN) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <!-- Bootstrap (CDN) -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- jsPlumbing (local) -->
+    <link rel="stylesheet" href="support/jsPlumbToolkit-defaults.css">
+    <script src="support/jsPlumb-2.2.8.js"></script>
+
+    <!-- FileSaver (local) -->
+    <script src="support/FileSaver.js"></script>
+
+    <!-- toolkit implementation (local) -->
+    <link rel="stylesheet" href="toolkit.css">
+    <script src="toolkit.js"></script>
+  </head>
+  <body>
+    <!-- menu bar and drop-downs -->
+    <nav class="navbar navbar-inverse" style="border-radius: 0;">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="https://github.com/smcolash" target="_GITHUB">Mitochondrion</a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">File<span class="caret"></span></a>
+            <ul class="dropdown-menu" style="cursor: pointer;">
+              <li><a id="new-model">New</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a id="open-model">Open...</a></li>
+              <li><a id="save-model">Save</a></li>
+              <li><a>Save As...</a></li>
+              <li><a id="close-model">Close</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a id="file-exit">Exit</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Edit<span class="caret"></span></a>
+            <ul class="dropdown-menu" style="cursor: pointer;">
+              <li class="disabled TBD"><a>Generate Code</a></li>
+              <li class="disabled TBD"><a>Build Code</a></li>
+              <li class="disabled TBD"><a>Monitor Code</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Help<span class="caret"></span></a>
+            <ul class="dropdown-menu" style="cursor: pointer;">
+              <li id="help-getting-started"><a>Getting Started</a></li>
+              <li id="help-toolchain"><a>Toolchain</a></li>
+              <li id="help-tutorials"><a>Tutorial</a></li>
+              <li id="help-license"><a>License</a></li>
+              <li role="separator" class="divider"></li>
+              <li id="help-about"><a>About...</a></li>
+            </ul>
+          </li>
+        </ul>
+        <div class="navbar-brand pull-right">
+          <a href="https://www.linkedin.com/pub/scott-mcolash/6/aa4/aa3" style="font-weight: bold; color: #9d9d9d; border-radius: 6px; border: 2px solid #9d9d9d; padding: 2px 4px 2px 4px; text-decoration:none;" target="_LINKEDIN"><span>in</span></a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- help/getting-started dialog -->
+    <div class="modal fade" id="help-getting-started-dialog" tabindex="-1" role="dialog" aria-labelledby="help-getting-started-dialog-label">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="help-about-dialog-label">Getting Started</h4>
+          </div>
+          <div class="modal-body">
+            TBD...
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- help/toolchain dialog -->
+    <div class="modal fade" id="help-toolchain-dialog" tabindex="-1" role="dialog" aria-labelledby="help-toolchain-dialog-label">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="help-about-dialog-label">Toolchain</h4>
+          </div>
+          <div class="modal-body">
+            TBD...
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- help/tutorials dialog -->
+    <div class="modal fade" id="help-tutorials-dialog" tabindex="-1" role="dialog" aria-labelledby="help-tutorials-dialog-label">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="help-about-dialog-label">Tutorials</h4>
+          </div>
+          <div class="modal-body">
+            TBD... links to pages/files in the repository?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- help/license dialog -->
+    <div class="modal fade" id="help-license-dialog" tabindex="-1" role="dialog" aria-labelledby="help-license-dialog-label">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="help-about-dialog-label">License</h4>
+          </div>
+          <div class="modal-body">
+            License: MIT
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- help/about dialog -->
+    <div class="modal fade" id="help-about-dialog" tabindex="-1" role="dialog" aria-labelledby="help-about-dialog-label">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="help-about-dialog-label">About the Mitochondrion Toolset...</h4>
+          </div>
+          <div class="modal-body">
+            The Mitochondrion Toolset is a graphical editor of UML-like
+            models which utilizes the open-source Mitochondrion object
+            execution platform. Planned functionality includes:
+            <ul>
+              <li>An editor to define and edit Actors, their ports and
+                events, their states and their connnections.</li>
+              <li>A run-time monitor to interact with live models, allowing
+                observation of their internal actions, states and
+                data.</li>
+            </ul>
+            More information can be found in the Mitochondrion GitHub
+            project repository, including code, documentation and example
+            models.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- hidden file selector elements -->
+    <input id="model-file-selector" type="file" accepted="application/json" style="display:none;" />
+
+    <!-- main appplication area -->
+    <div class="container-fluid">
+      <section class="module">
+        <ol id="actor-navigator" class="breadcrumb"></ol>
+        <div class="state-editor" id="state-editor"></div>
+      </section>
+    </div>
+
+    <!-- TBD - main context menu -->
+    <ul id="add-node-menu" class="dropdown-menu" role="menu" style="display:none; cursor: pointer;" >
+      <li><a id="add-initial-state">Add Initial State</a></li>
+      <li><a id="add-state">Add State</a></li>
+      <li><a id="add-choice-point">Add Choice-Point</a></li>
+      <li><a id="add-terminal-state">Add Terminal State</a></li>
+      <!--
+        <li class="divider"></li>
+        <li><a tabindex="-1" href="#">Separated link</a></li>
+      -->
+    </ul>
+
+    <!-- state editor form -->
+    <div class="modal fade" id="state-editor-form" tabindex="-1" role="dialog" aria-labelledby="state-editor-label">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="state-editor-label">State Editor</h4>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="state-name">State Name</label>
+              <div class="input-group">
+                <input id="state-name" type="text" class="form-control">
+                <span class="input-group-btn">
+                  <button id="change-state-name" class="btn btn-default" type="button">Change</button>
+                </span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="state-entry-code">State Entry Code</label>
+              <textarea id="state-entry-code" class="form-control" rows=10></textarea>
+            </div>
+            <div class="form-group">
+              <label for="state-exit-code">State Exit Code</label>
+              <textarea id="state-exit-code" class="form-control" rows=10></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button id="delete_state" type="button" class="pull-left btn btn-default" data-dismiss="modal">Delete</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- transition editor form -->
+    <div class="modal fade" id="transition-editor-form" tabindex="-1" role="dialog" aria-labelledby="transition-editor-label">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="transition-editor-label">Transition Editor</h4>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="transition-name">Transition Name</label>
+              <div class="input-group">
+                <input id="transition-name" type="text" class="form-control">
+                <span class="input-group-btn">
+                  <button id="change-transition-name" class="btn btn-default" type="button">Change</button>
+                </span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="transition-guard-code">Transition Guard Code</label>
+              <textarea id="transition-guard-code" class="form-control" rows=10></textarea>
+            </div>
+            <div class="form-group">
+              <label for="transition-code">Transition Code</label>
+              <textarea id="transition-code" class="form-control" rows=10></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button id="delete_transition" type="button" class="pull-left btn btn-default" data-dismiss="modal">Delete</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <section class="module">
+        <h4>Backlog</h4>
+        <ol>
+          <li class="backlog-in-progress">Re-work transition editing.</li>
+          <li class="backlog-in-progress">Top-level context menu to add nodes.</li>
+          <li class="backlog-critical">Fix contextmenu bindings.</li>
+          <li>Per-node context menu for delete, edit, rename, ...</li>
+          <li>Per-connection context menu for delete, edit, rename, ...</li>
+          <li>How to save the model to the local system?</li>
+          <li>Generalize the initialization (new, open, close, ...)</li>
+          <li>Add top-level state container (border/container).</li>
+          <li>Add internal self-transitions to state container.</li>
+          <li>Encode source text to allow arbitrary content to be held in JSON strings.</li>
+          <li>figure out how to restart editor correctly to handle muptiple models and views.</li>
+          <li>Create object data model to support actors, states and transitions.</li>
+          <li>Create object model to streamline and simplify the internals of the editor.</li>
+          <li>Create mapping of object data model to code generation.</li>
+          <li>Create local server (Python/WSGI?) as build server. Perhaps this is the 'save' option as well?</li>
+          <li>Open and save model from/to network service.</li>
+          <li>Make editing cleaner - drag, connect, etc.</li>
+          <li>Add actor editing.</li>
+          <li>Add ports and bindings.</li>
+          <li>Add event/protocol modeling.</li>
+          <li>Integrate the modeling areas so they makes sense.</li>
+          <li>Design IPC for monitoring and controlling running models using the toolset.</li>
+          <li>General cleanup and modularization.</li>
+          <li>Make the model navigator (breadcrumbs) actually useful.</li>
+          <li>Open / Save file filtering to ONLY show *.json files</li>
+          <li>WebSocket options for IPC to toolchain and storage.</li>
+          <li>WebSocket options for IPC to running model.</li>
+        </ol>
+        <h4>Bugs</h4>
+        <ol>
+          <li>TBD</li>
+        </ol>
+        <h4>Release Notes</h4>
+        <ul>
+          <li>r0.1</li>
+          <ul>
+            <li>Initial state editor working.</li>
+          </ul>
+        </ul>
+        <h4>Notes</h4>
+        <h5>Toolkit Links</h5>
+        https://jsplumbtoolkit.com/community/doc/home.html<br>
+        https://jsplumbtoolkit.com/community/apidocs/index.html<br>
+        https://jsplumbtoolkit.com/demos.html<br>
+        https://jsplumbtoolkit.com/community/demo/groups/index.html<br>
+        https://jsplumbtoolkit.com/community/doc/events.html#evt-contextmenu<br>
+        <h5>Favicon Generator</h5>
+        http://www.favicon.cc
+        <h5>Modal Context Menus...</h5>
+        <pre>
+https://jsfiddle.net/KyleMit/X9tgY/
+        </pre>
+
+        <h5>Saving Data to Local Files...</h5>
+        <pre>
+
+<a href="data:application/xml;charset=utf-8,your code here" download="filename.html">Named</a>
+<a href="data:application/xml;charset=utf-8,your code here" download>Not Named</a>
+
+function download(filename, text) {
+    var pom = document.createElement('a');
+    pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    pom.setAttribute('download', filename);
+
+    if (document.createEvent) {
+        var event = document.createEvent('MouseEvents');
+        event.initEvent('click', true, true);
+        pom.dispatchEvent(event);
+    }
+    else {
+        pom.click();
+    }
+}
+
+download('test.txt', 'Hello world!');
+
+function download(content, filename, contentType)
+{
+    if(!contentType) contentType = 'application/octet-stream';
+        var a = document.createElement('a');
+        var blob = new Blob([content], {'type':contentType});
+        a.href = window.URL.createObjectURL(blob);
+        a.download = filename;
+        a.click();
+}
+
+    <a download="My-FileName.txt" href="data:application/octet-stream,HELLO-WORLDDDDDDDD">Click here</a>  
+
+function onQuotaRequestSuccess(grantedQuota)
+{
+
+    function saveFile(directoryEntry)
+    {
+
+        function createFileWriter(fileEntry)
+        {
+
+            function write(fileWriter)
+            {
+                var dataBlob = new Blob(["Hello world!"], {type: "text/plain"});
+                fileWriter.write(dataBlob);              
+            }
+
+            fileEntry.createWriter(write);
+        }
+
+        directoryEntry.getFile(
+            "testFile", 
+            {create: true, exclusive: true},
+            createFileWriter
+        );
+    }
+
+    requestFileSystem(Window.PERSISTENT, grantedQuota, saveFile);
+}
+
+var desiredQuota = 1024 * 1024 * 1024;
+var quotaManagementObj = navigator.webkitPersistentStorage;
+quotaManagementObj.requestQuota(desiredQuota, onQuotaRequestSuccess);
+
+function saveAsFile(link, content, filename) {
+    var blob = new Blob([content], {type: "text/text"});
+    var url  = URL.createObjectURL(blob);
+
+    // update link to new 'url'
+    link.download    = filename + ".txt";
+    link.href        = url;
+}
+
+saveAsFile(this, "YourContent", "HelloWorldFile");
+
+https://eligrey.com/demos/FileSaver.js/
+https://developers.google.com/web/updates/2011/08/Saving-generated-files-on-the-client-side
+
+http://html5-demos.appspot.com/static/a.download.html?_sm_au_=iQHsqRrSjP4rqb5N
+
+        </pre>
+      </section>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,186 @@
+.state-editor {
+  position: relative;
+  height: 450px;
+  overflow: scroll !important;
+  cursor: default;
+}
+
+.initial-state {
+    position: absolute;
+    background: #2e6f9a;
+    width: 2em;
+    height: 2em;
+    border-radius: 50%;
+    cursor: move;
+}
+
+.terminal-state-outer {
+    position: absolute;
+    background: 0;
+    border: solid 2px;
+    border-color: #2e6f9a;
+    width: 2em;
+    height: 2em;
+    border-radius: 50%;
+    cursor: move;
+}
+
+.terminal-state-inner {
+    position: absolute;
+    background: #2e6f9a;
+    width: 1em;
+    height: 1em;
+    left: 25%;
+    top: 25%;
+    margin-top: -1px;
+    margin-left: -1px;
+    border-radius: 50%;
+}
+
+.choice {
+    position: absolute;
+    border: solid 2px;
+    border-color: #2e6f9a;
+    width: 2em;
+    height: 2em;
+    transform: rotate(45deg);
+    cursor: move;
+}
+
+.choice-label {
+    position: absolute;
+    font-size: 11px;
+    transform: rotate(-45deg);
+}
+
+.w {
+    padding: 16px;
+    padding-top: 8px;
+    padding-bottom: 24px;
+    position: absolute;
+    z-index: 4;
+    border: 2px solid #2e6f9a;
+    box-shadow: 2px 2px 19px #e0e0e0;
+    -o-box-shadow: 2px 2px 19px #e0e0e0;
+    -webkit-box-shadow: 2px 2px 19px #e0e0e0;
+    -moz-box-shadow: 2px 2px 19px #e0e0e0;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    opacity: 0.8;
+    cursor: move;
+    background-color: white;
+    font-size: 11px;
+    -webkit-transition: background-color 0.25s ease-in;
+    -moz-transition: background-color 0.25s ease-in;
+    transition: background-color 0.25s ease-in;
+}
+
+.w:hover {
+    background-color: #5c96bc;
+    color: white;
+
+}
+
+.aLabel {
+    -webkit-transition: background-color 0.25s ease-in;
+    -moz-transition: background-color 0.25s ease-in;
+    transition: background-color 0.25s ease-in;
+}
+
+.aLabel.jtk-hover, .jtk-source-hover, .jtk-target-hover {
+    background-color: #1e8151;
+    color: white;
+}
+
+.aLabel {
+    font-size: 11px;
+    background-color: white;
+    opacity: 0.8;
+    padding: 0.3em;
+    cursor: pointer;
+}
+
+.center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+
+.ep {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -0.5em;
+    margin-top: -0.5em;
+    width: 1em;
+    height: 1em;
+    background-color: orange;
+    cursor: pointer;
+    _box-shadow: 0 0 2px black;
+    _-webkit-transition: -webkit-box-shadow 0.25s ease-in;
+    _-moz-transition: -moz-box-shadow 0.25s ease-in;
+    _transition: box-shadow 0.25s ease-in;
+    border-radius: 50%;
+    _z-index: 10;
+    __opacity: 0.00;
+}
+
+.ep:hover {
+    _box-shadow: 0 0 6px black;
+    _opacity: 1.00;
+}
+
+.edit {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -0.5em;
+    margin-top: -0.5em;
+    width: 1em;
+    height: 1em;
+    background-color: red;
+    cursor: pointer;
+    _box-shadow: 0 0 2px black;
+    _-webkit-transition: -webkit-box-shadow 0.25s ease-in;
+    _-moz-transition: -moz-box-shadow 0.25s ease-in;
+    _transition: box-shadow 0.25s ease-in;
+    _border-radius: 50%;
+    _z-index: 10;
+    __opacity: 0.00;
+}
+
+.edit:hover {
+    _box-shadow: 0 0 6px black;
+    _opacity: 1.00;
+}
+
+.dragHover {
+    border: 2px solid orange;
+}
+
+path, .jtk-endpoint { cursor:pointer; }
+
+.backlog-bug {
+  color: red;
+  font-weight: bold;
+}
+
+.backlog-critical {
+  color: red;
+  font-weight: bold;
+}
+
+.backlog-in-progress {
+  font-weight: bold;
+}
+
+.backlog-complete {
+  color: green;
+  text-decoration: line-through;
+  display: none;
+}
+
+.TBD {
+  color: red;
+  text-decoration: line-through;
+}
