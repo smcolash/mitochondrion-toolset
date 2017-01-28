@@ -268,6 +268,34 @@ jsPlumb.ready (function () {
     }
   });
 
+  var edit_transition_callback = function (c, e) {
+    if (c.type == 'Label') {
+      console.log ('label...');
+      $('#transition-editor-form').modal ('show');
+      //var name = _transition.getLabel ();
+      //$('#transition-name').val (name);
+    }
+    else {
+      console.log ('connection...');
+      $('#transition-editor-form').modal ('show');
+
+      //_transition = c;
+      //var name = _transition.getOverlay ('label').getLabel ();
+      //$('#transition-name').val (name);
+
+      // FIXME...
+      //$('#transition-code').val ('//\n// transition code\n//\nEvent event ("test");\nport.send (event);');
+
+      //$('#transition-editor-form').modal ('show');
+    }
+
+    e.stopPropagation ();
+    e.stopImmediatePropagation ();
+    e.preventDefault ();
+
+    return (false);
+  }
+
   //
   // bind a connection listener to add connections between nodes
   //
@@ -278,40 +306,7 @@ jsPlumb.ready (function () {
     // bind a contextmenu listener for editing connections
     //
     info.connection.bind ("contextmenu", function (c, e) {
-      console.log ("DEBUG: per-transition binding");
-      console.log (e);
-
-      //console.log (c);
-      //console.log (e);
-
-      if (c.type == 'Label') {
-        console.log ('label...');
-        $('#transition-editor-form').modal ('show');
-        //var name = _transition.getLabel ();
-        //$('#transition-name').val (name);
-      }
-      else {
-        console.log ('connection...');
-        $('#transition-editor-form').modal ('show');
-
-
-        //_transition = c;
-        //var name = _transition.getOverlay ('label').getLabel ();
-        //$('#transition-name').val (name);
-
-        // FIXME...
-        //$('#transition-code').val ('//\n// transition code\n//\nEvent event ("test");\nport.send (event);');
-
-        //$('#transition-editor-form').modal ('show');
-      }
-
-      console.log ("DEBUG: returning false...");
-
-      e.stopPropagation ();
-      e.stopImmediatePropagation ();
-      e.preventDefault ();
-
-      return (false);
+      return (edit_transition_callback (c, e));
     });
   });
 
@@ -497,6 +492,13 @@ jsPlumb.ready (function () {
   var connect = function (data) {
     var connection = instance.connect ({source: data.from, target: data.to, type: "basic"});
     connection.getOverlay ('label').setLabel (data.label);
+
+    //
+    // bind a contextmenu listener for editing connections
+    //
+    connection.bind ("contextmenu", function (c, e) {
+      return (edit_transition_callback (c, e));
+    });
 
     return;
   };
