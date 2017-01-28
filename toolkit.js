@@ -99,7 +99,6 @@ jsPlumb.ready (function () {
 
       reader.onload = function (e) {
         _model = JSON.parse (e.target.result);
-        console.log (_model);
 
         //
         // initialize the navigator
@@ -136,7 +135,7 @@ jsPlumb.ready (function () {
   // save the current model
   //
   $("#save-model").on ('click', function (e) {
-    var blob = new Blob([JSON.stringify (_model)], {type: "application/json;charset=utf-8"});
+    var blob = new Blob([JSON.stringify (_model, 2, ' ')], {type: "application/json;charset=utf-8"});
     saveAs (blob, _filename);
   });
 
@@ -179,16 +178,27 @@ jsPlumb.ready (function () {
   });
 
   //
+  // hide the add-node context menu when not used
+  //
+  $('#add-node-menu').on ('mouseleave', function (e) {
+    $('#add-node-menu').hide ();
+  });
+
+  //
   // main context menu ideas...
   //
   $('#state-editor').on ('contextmenu', function (e) {
-    console.log ('contextmenu - main, prior to ctrl check');
     //
     // return native menu if pressing control
     //
     if (e.ctrlKey) {
       return;
     }
+
+    //e.stopPropagation ();
+    //e.preventDefault ();
+
+    console.log ("DEBUG: top-level in state editor window");
 
     //open menu
     var x = e.clientX;
@@ -200,10 +210,14 @@ jsPlumb.ready (function () {
           menu.hide ();
 
           var choice = $(e.target);
-          var x = e.clientX;
-          var y = e.clientY - $('#add-node-menu').height ();
+          var nx = x;
+          var ny = y - menu.height ();
 
-          var node = {'type': '', 'label': null, 'x': x, 'y': y};
+          //console.log ([menu.width (), menu.height ()]);
+          //console.log ([x, y]);
+          //console.log ([nx, ny]);
+
+          var node = {'type': '', 'label': null, 'x': nx, 'y': ny};
 
           if ($(choice).attr ('id') == 'add-initial-state') {
             node['type'] = 'initial';
