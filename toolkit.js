@@ -3,36 +3,38 @@ jsPlumb.ready (function () {
   // initialize the model and environment
   //
   var initialize = function () {
-
-    instance = jsPlumb.getInstance ({
-      Endpoint: [ "Dot", {radius: 3} ],
-      Connector: "StateMachine",
-      HoverPaintStyle: {
-        stroke: "#1e8151",
-        strokeWidth: 2
-      },
-      ConnectionOverlays: [
-        [ "Arrow", {
-          location: 1,
-          id: "arrow",
-          length: 10,
-          width: 10,
-          foldback: 0.8
-        } ],
-        [ "Label", { label: "transition", id: "label", cssClass: "aLabel" }]
-      ],
-      Container: "state-editor"
-    });
+    if (!instance) {
+      instance = jsPlumb.getInstance ({
+        Endpoint: [ "Dot", {radius: 3} ],
+        Connector: "StateMachine",
+        HoverPaintStyle: {
+          stroke: "#1e8151",
+          strokeWidth: 2
+        },
+        ConnectionOverlays: [
+          [ "Arrow", {
+            location: 1,
+            id: "arrow",
+            length: 10,
+            width: 10,
+            foldback: 0.8
+          } ],
+          [ "Label", { label: "transition", id: "label", cssClass: "aLabel" }]
+        ],
+        Container: "state-editor"
+      });
+    }
 
     instance.registerConnectionType ("basic", {
       anchor: "Continuous",
       connector: "StateMachine"
     });
 
-    jsPlumb.deleteEveryEndpoint ();
-    jsPlumb.empty ("state-editor");
-    jsPlumb.reset ();
-    jsPlumb.repaintEverything ();
+    instance.deleteEveryEndpoint ();
+    instance.empty ("state-editor");
+    instance.reset ();
+
+    instance.repaintEverything ();
 
     _model = {'actor': 'unnamed', 'nodes': [], 'transitions': []};
     _transition = null;
@@ -77,21 +79,22 @@ jsPlumb.ready (function () {
     //
     // clear the file selection, else 'onchange' won't work
     //
-    $("#model-file-selector").replaceWith ($("#model-file-selector").val ('').clone (true));
+    var element = $('#model-file-selector');
+    element.off ('change');
+    element.closest ('form').get (0).reset ();
 
     //
     // raise the file selector
     //
-    $('#model-file-selector').click ();
+    element.click ();
 
     //
     // handle the selection of a file
     //
-    $('#model-file-selector').on ('change', function () {
+    element.on ('change', function () {
       initialize ();
       var file = this.files[0];
       _filename = file.name;
-      console.log (file);
       var reader = new FileReader ();
 
       reader.onload = function (e) {
@@ -383,7 +386,7 @@ jsPlumb.ready (function () {
     //
     // bind a listener to add nodes to the state editor
     //
-    jsPlumb.on (d, "contextmenu", function (e) {
+    instance.on (d, "contextmenu", function (e) {
       console.log ("DEBUG: per-state node binding");
       $('#state-editor-form').modal ('show');
       e.stopPropagation ();
@@ -397,7 +400,7 @@ jsPlumb.ready (function () {
   // create state machine nodes
   //
   var create = function (node) {
-    console.log (node);
+    //console.log (node);
     if (node.type == 'initial') {
       addInitial (node.x, node.y, node.label);
     }
@@ -426,11 +429,6 @@ jsPlumb.ready (function () {
 
     return;
   };
-
-  //
-  // initialize the modeler
-  //
-  initialize ();
 });
 
 //
