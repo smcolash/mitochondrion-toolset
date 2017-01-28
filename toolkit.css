@@ -3,6 +3,7 @@
   height: 450px;
   overflow: scroll !important;
   cursor: default;
+  z-index: 0;
 }
 
 .initial-state {

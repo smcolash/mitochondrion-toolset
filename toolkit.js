@@ -38,7 +38,7 @@ jsPlumb.ready (function () {
 
     _model = {'actor': 'unnamed', 'nodes': [], 'transitions': []};
     _transition = null;
-    _filename = null;
+    _filename = 'unnamed.json';
 
     //
     // initialize the navigator
@@ -135,8 +135,24 @@ jsPlumb.ready (function () {
   // save the current model
   //
   $("#save-model").on ('click', function (e) {
-    var blob = new Blob([JSON.stringify (_model, 2, ' ')], {type: "application/json;charset=utf-8"});
-    saveAs (blob, _filename);
+    var text = JSON.stringify (_model, 2, ' ');
+
+    if (typeof (Storage) !== "undefined") {
+      //
+      // save to local storage
+      //
+      localStorage.setItem (_filename, text);
+      alert (text);
+    }
+    else {
+      //
+      // save via the download mechanism
+      //
+      var blob = new Blob ([text], {type: "application/json;charset=utf-8"});
+      saveAs (blob, _filename);
+    }
+
+    return;
   });
 
   //
@@ -187,18 +203,9 @@ jsPlumb.ready (function () {
   //
   // main context menu ideas...
   //
-  $('#state-editor').on ('contextmenu', function (e) {
-    //
-    // return native menu if pressing control
-    //
-    if (e.ctrlKey) {
-      return;
-    }
-
-    //e.stopPropagation ();
-    //e.preventDefault ();
-
+  instance.on ($('#state-editor'), 'contextmenu', function (e) {
     console.log ("DEBUG: top-level in state editor window");
+    console.log (e);
 
     //open menu
     var x = e.clientX;
@@ -235,6 +242,10 @@ jsPlumb.ready (function () {
           create (node);
       });
 
+    e.stopPropagation ();
+    e.stopImmediatePropagation ();
+    e.preventDefault ();
+
     return (false);
   });
 
@@ -268,33 +279,38 @@ jsPlumb.ready (function () {
     //
     info.connection.bind ("contextmenu", function (c, e) {
       console.log ("DEBUG: per-transition binding");
-
-      e.stopPropagation ();
-      e.preventDefault ();
-
-      console.log (c);
       console.log (e);
+
+      //console.log (c);
+      //console.log (e);
 
       if (c.type == 'Label') {
         console.log ('label...');
-        var name = _transition.getLabel ();
-        $('#transition-name').val (name);
+        $('#transition-editor-form').modal ('show');
+        //var name = _transition.getLabel ();
+        //$('#transition-name').val (name);
       }
       else {
         console.log ('connection...');
+        $('#transition-editor-form').modal ('show');
 
 
-        _transition = c;
-        var name = _transition.getOverlay ('label').getLabel ();
-        $('#transition-name').val (name);
+        //_transition = c;
+        //var name = _transition.getOverlay ('label').getLabel ();
+        //$('#transition-name').val (name);
 
         // FIXME...
-        $('#transition-code').val ('//\n// transition code\n//\nEvent event ("test");\nport.send (event);');
+        //$('#transition-code').val ('//\n// transition code\n//\nEvent event ("test");\nport.send (event);');
 
-        $('#transition-editor-form').modal ('show');
+        //$('#transition-editor-form').modal ('show');
       }
 
       console.log ("DEBUG: returning false...");
+
+      e.stopPropagation ();
+      e.stopImmediatePropagation ();
+      e.preventDefault ();
+
       return (false);
     });
   });
@@ -344,6 +360,19 @@ jsPlumb.ready (function () {
     d.style.top = y + "px";
     instance.getContainer ().appendChild (d);
     initState (d);
+
+    //
+    // bind a listener to add nodes to the state editor
+    //
+    instance.on (d, "contextmenu", function (e) {
+      console.log ("DEBUG: per-initial-state node binding");
+      //$('#state-editor-form').modal ('show');
+
+      e.stopPropagation ();
+      e.stopImmediatePropagation ();
+      e.preventDefault ();
+    });
+
     return d;
   };
 
@@ -361,6 +390,19 @@ jsPlumb.ready (function () {
     d.style.top = y + "px";
     instance.getContainer ().appendChild (d);
     initState (d);
+
+    //
+    // bind a listener to add nodes to the state editor
+    //
+    instance.on (d, "contextmenu", function (e) {
+      console.log ("DEBUG: per-terminal-state node binding");
+      //$('#state-editor-form').modal ('show');
+
+      e.stopPropagation ();
+      e.stopImmediatePropagation ();
+      e.preventDefault ();
+    });
+
     return d;
   };
 
@@ -378,6 +420,19 @@ jsPlumb.ready (function () {
     d.style.top = y + "px";
     instance.getContainer ().appendChild (d);
     initState (d);
+
+    //
+    // bind a listener to add nodes to the state editor
+    //
+    instance.on (d, "contextmenu", function (e) {
+      console.log ("DEBUG: per-choice node binding");
+      //$('#state-editor-form').modal ('show');
+
+      e.stopPropagation ();
+      e.stopImmediatePropagation ();
+      e.preventDefault ();
+    });
+
     return d;
   };
 
@@ -403,7 +458,9 @@ jsPlumb.ready (function () {
     instance.on (d, "contextmenu", function (e) {
       console.log ("DEBUG: per-state node binding");
       $('#state-editor-form').modal ('show');
+
       e.stopPropagation ();
+      e.stopImmediatePropagation ();
       e.preventDefault ();
     });
 
