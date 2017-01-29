@@ -229,15 +229,15 @@
             </div>
             <div class="form-group">
               <label for="state-entry-code">State Entry Code</label>
-              <textarea id="state-entry-code" class="form-control" rows=5></textarea>
+              <textarea id="state-entry-code" class="form-control code-editor" rows=5></textarea>
             </div>
             <div class="form-group">
               <label for="state-exit-code">State Exit Code</label>
-              <textarea id="state-exit-code" class="form-control" rows=5></textarea>
+              <textarea id="state-exit-code" class="form-control code-editor" rows=5></textarea>
             </div>
           </div>
           <div class="modal-footer">
-            <button id="delete_state" type="button" class="pull-left btn btn-default" data-dismiss="modal">Delete</button>
+            <button id="delete-state" type="button" class="pull-left btn btn-default" data-dismiss="modal">Delete</button>
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             <button type="button" class="btn btn-primary">Save changes</button>
           </div>
@@ -265,15 +265,15 @@
             </div>
             <div class="form-group">
               <label for="transition-guard-code">Transition Guard Code</label>
-              <textarea id="transition-guard-code" class="form-control" rows=5></textarea>
+              <textarea id="transition-guard-code" class="form-control code-editor" rows=5></textarea>
             </div>
             <div class="form-group">
               <label for="transition-code">Transition Code</label>
-              <textarea id="transition-code" class="form-control" rows=5></textarea>
+              <textarea id="transition-code" class="form-control code-editor" rows=5></textarea>
             </div>
           </div>
           <div class="modal-footer">
-            <button id="delete_transition" type="button" class="pull-left btn btn-default" data-dismiss="modal">Delete</button>
+            <button id="delete-transition" type="button" class="pull-left btn btn-default" data-dismiss="modal">Delete</button>
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             <button type="button" class="btn btn-primary">Save changes</button>
           </div>
@@ -289,20 +289,22 @@
           <li class="backlog-complete">Integrate contextmenu handling for programmatically added connections.</li>
           <li class="backlog-complete">Top-level context menu to add nodes.</li>
           <li class="backlog-complete">Fix contextmenu bindings.</li>
-          <li>Per-node context menu for delete, edit, rename, ...</li>
-          <li>Per-connection context menu for delete, edit, rename, ...</li>
+          <li class="backlog-in-progress">Per-node context menu for delete, edit, rename, ...</li>
+          <li class="backlog-in-progress">Per-connection context menu for delete, edit, rename, ...</li>
+          <li>Add code storage to the model and to the editor functionalities.</li>
           <li>How to save the model to the local system?</li>
-          <li>Generalize the initialization (new, open, close, ...)</li>
+          <li class="backlog-complete">Generalize the initialization (new, open, close, ...)</li>
           <li>Add top-level state container (border/container).</li>
           <li>Add internal self-transitions to state container.</li>
           <li>Encode source text to allow arbitrary content to be held in JSON strings.</li>
-          <li>figure out how to restart editor correctly to handle muptiple models and views.</li>
+          <li class="backlog-complete">figure out how to restart editor correctly to handle muptiple models and views.</li>
+          <li class="backlof-in-progress">Use uuid as id, custom data as readable name.</li>
           <li>Create object data model to support actors, states and transitions.</li>
           <li>Create object model to streamline and simplify the internals of the editor.</li>
           <li>Create mapping of object data model to code generation.</li>
           <li>Create local server (Python/WSGI?) as build server. Perhaps this is the 'save' option as well?</li>
           <li>Open and save model from/to network service.</li>
-          <li>Make editing cleaner - drag, connect, etc.</li>
+          <li class="backlog-complete">Make editing cleaner - drag, connect, etc.</li>
           <li>Add actor editing.</li>
           <li>Add ports and bindings.</li>
           <li>Add event/protocol modeling.</li>
@@ -322,7 +324,7 @@
         <ul>
           <li>r0.1</li>
           <ul>
-            <li>Initial state editor working.</li>
+            <li>Initial state editor concept working.</li>
           </ul>
         </ul>
         <h4>Notes</h4>
@@ -332,12 +334,6 @@
         https://jsplumbtoolkit.com/demos.html<br>
         https://jsplumbtoolkit.com/community/demo/groups/index.html<br>
         https://jsplumbtoolkit.com/community/doc/events.html#evt-contextmenu<br>
-        <h5>Favicon Generator</h5>
-        http://www.favicon.cc
-        <h5>Modal Context Menus...</h5>
-        <pre>
-https://jsfiddle.net/KyleMit/X9tgY/
-        </pre>
 
         <h5>Saving Data to Local Files...</h5>
         <pre>

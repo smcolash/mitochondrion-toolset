@@ -38,6 +38,7 @@ jsPlumb.ready (function () {
 
     _model = {'actor': 'unnamed', 'nodes': [], 'transitions': []};
     _transition = null;
+    _state = null;
     _filename = 'unnamed.json';
 
     //
@@ -58,12 +59,13 @@ jsPlumb.ready (function () {
   // global storage of the model data
   //
   var _model = {'actor': 'unnamed', 'nodes': [], 'transitions': []};
-  var _filename = null; // "model.json";
+  var _filename = null;
 
   //
-  // global storage of the transition being edited
+  // global storage of elements being edited
   //
   var _transition = null;
+  var _state = null;
 
   //
   // create a new/empty model
@@ -194,35 +196,30 @@ jsPlumb.ready (function () {
   });
 
   //
-  // hide the add-node context menu when not used
+  // hide the add-node context menu when not immediately used
   //
   $('#add-node-menu').on ('mouseleave', function (e) {
     $('#add-node-menu').hide ();
   });
 
   //
-  // main context menu ideas...
+  // main state editor context menu
   //
   instance.on ($('#state-editor'), 'contextmenu', function (e) {
-    console.log ("DEBUG: top-level in state editor window");
-    console.log (e);
-
-    //open menu
     var x = e.clientX;
     var y = e.clientY;
 
+    //open menu
     var menu = $('#add-node-menu').show ().css ({position: "absolute", left: x, top: y})
         .off ('click')
         .on ('click', 'a', function (e) {
           menu.hide ();
 
+          // FIXME - the node locations are a bit off...
+
           var choice = $(e.target);
           var nx = x;
           var ny = y - menu.height ();
-
-          //console.log ([menu.width (), menu.height ()]);
-          //console.log ([x, y]);
-          //console.log ([nx, ny]);
 
           var node = {'type': '', 'label': null, 'x': nx, 'y': ny};
 
@@ -250,44 +247,35 @@ jsPlumb.ready (function () {
   });
 
   //
-  // set transition name
+  // set state name
   //
-  $("#change-transition-name").on ('click', function (e) {
-    if (_transition) {
-      //_transition.getOverlay ("label").setLabel ($('#transition-name').val ());
-      _transition.setLabel ($('#transition-name').val ());
+  $("#change-state-name").on ('click', function (e) {
+    if (_state) {
+      _state.find ('span').text ($('#state-name').val ());
     }
   });
 
   //
-  // delete transition from model
+  // delete state from model
   //
-  $("#delete_transition").on ('click', function (e) {
-    if (_transition) {
-      instance.detach (_transition);
+  $("#delete-state").on ('click', function (e) {
+    if (_state) {
+      instance.remove (_state);
+      _state = null;
     }
   });
 
-  var edit_transition_callback = function (c, e) {
-    if (c.type == 'Label') {
-      console.log ('label...');
-      $('#transition-editor-form').modal ('show');
-      //var name = _transition.getLabel ();
-      //$('#transition-name').val (name);
-    }
-    else {
-      console.log ('connection...');
-      $('#transition-editor-form').modal ('show');
+  //
+  // callback for editing states
+  //
+  var edit_state_callback = function (c, e) {
+    _state = $(c);
+    $('#state-name').val (_state.text ());
+    $('#state-editor-form').modal ('show');
 
-      //_transition = c;
-      //var name = _transition.getOverlay ('label').getLabel ();
-      //$('#transition-name').val (name);
-
-      // FIXME...
-      //$('#transition-code').val ('//\n// transition code\n//\nEvent event ("test");\nport.send (event);');
-
-      //$('#transition-editor-form').modal ('show');
-    }
+    // FIXME...
+    $('#state-entry-code').val ('//\n// state entry code\n//\nstd::cout << "enter";');
+    $('#state-exit-code').val ('//\n// state exit code\n//\nstd::cout << "exit";');
 
     e.stopPropagation ();
     e.stopImmediatePropagation ();
@@ -309,6 +297,51 @@ jsPlumb.ready (function () {
       return (edit_transition_callback (c, e));
     });
   });
+
+  //
+  // set transition name
+  //
+  $("#change-transition-name").on ('click', function (e) {
+    if (_transition) {
+      _transition.getOverlay ("label").setLabel ($('#transition-name').val ());
+    }
+  });
+
+  //
+  // delete transition from model
+  //
+  $("#delete-transition").on ('click', function (e) {
+    if (_transition) {
+      instance.detach (_transition);
+    }
+  });
+
+  //
+  // callback for editing transitions
+  //
+  var edit_transition_callback = function (c, e) {
+    var connection = c;
+    if (c.type == 'Label') {
+      connection = c.component;
+    }
+
+    _transition = connection;
+    var name = _transition.getOverlay ('label').getLabel ();
+    $('#transition-name').val (name);
+
+    // FIXME...
+    $('#transition-guard-code').val ('//\n// transition guard code\n//\nreturn (false);');
+    $('#transition-code').val ('//\n// transition code\n//\nEvent event ("test");\nport.send (event);');
+
+    $('#transition-editor-form').modal ('show');
+
+    e.stopPropagation ();
+    e.stopImmediatePropagation ();
+    e.preventDefault ();
+
+    return (false);
+  }
+
 
   //
   // initialize element as connection targets and source.
@@ -339,6 +372,8 @@ jsPlumb.ready (function () {
       anchor: "Continuous",
       allowLoopback: true
     });
+
+    return;
   };
 
   var addInitial = function (x, y, name = "initial") {
@@ -366,6 +401,8 @@ jsPlumb.ready (function () {
       e.stopPropagation ();
       e.stopImmediatePropagation ();
       e.preventDefault ();
+
+      return (false);
     });
 
     return d;
@@ -396,6 +433,8 @@ jsPlumb.ready (function () {
       e.stopPropagation ();
       e.stopImmediatePropagation ();
       e.preventDefault ();
+
+      return (false);
     });
 
     return d;
@@ -426,6 +465,8 @@ jsPlumb.ready (function () {
       e.stopPropagation ();
       e.stopImmediatePropagation ();
       e.preventDefault ();
+
+      return (false);
     });
 
     return d;
@@ -441,7 +482,7 @@ jsPlumb.ready (function () {
     }
     d.id = id;
     //d.innerHTML = name + "<div class=\"center\"><div class=\"ep\"></div><div class=\"edit\"></div></div>";
-    d.innerHTML = name + "<div class=\"ep\"></div>";
+    d.innerHTML = '<span>' + name + "</span><div class=\"ep\"></div>";
     d.style.left = x + "px";
     d.style.top = y + "px";
     instance.getContainer ().appendChild (d);
@@ -451,12 +492,7 @@ jsPlumb.ready (function () {
     // bind a listener to add nodes to the state editor
     //
     instance.on (d, "contextmenu", function (e) {
-      console.log ("DEBUG: per-state node binding");
-      $('#state-editor-form').modal ('show');
-
-      e.stopPropagation ();
-      e.stopImmediatePropagation ();
-      e.preventDefault ();
+      return (edit_state_callback (this, e));
     });
 
     return d;

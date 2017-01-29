@@ -161,6 +161,10 @@
 
 path, .jtk-endpoint { cursor:pointer; }
 
+.code-editor {
+  font-family: courier;
+}
+
 .backlog-bug {
   color: red;
   font-weight: bold;
