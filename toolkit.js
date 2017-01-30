@@ -30,10 +30,11 @@ jsPlumb.ready (function () {
       connector: "StateMachine"
     });
 
+    //
+    // clear all existing contents
+    //
     instance.deleteEveryEndpoint ();
     instance.empty ("state-editor");
-    instance.reset ();
-
     instance.repaintEverything ();
 
     _model = {'actor': 'unnamed', 'nodes': [], 'transitions': []};
@@ -66,6 +67,20 @@ jsPlumb.ready (function () {
   //
   var _transition = null;
   var _state = null;
+
+  //
+  // bind a connection listener to add connections between nodes
+  //
+  instance.bind ("connection", function (info) {
+    info.connection.getOverlay ("label").setLabel (info.connection.id);
+
+    //
+    // bind a contextmenu listener for editing connections
+    //
+    info.connection.bind ("contextmenu", function (c, e) {
+      return (edit_transition_callback (c, e));
+    });
+  });
 
   //
   // create a new/empty model
@@ -283,20 +298,6 @@ jsPlumb.ready (function () {
 
     return (false);
   }
-
-  //
-  // bind a connection listener to add connections between nodes
-  //
-  instance.bind ("connection", function (info) {
-    info.connection.getOverlay ("label").setLabel (info.connection.id);
-
-    //
-    // bind a contextmenu listener for editing connections
-    //
-    info.connection.bind ("contextmenu", function (c, e) {
-      return (edit_transition_callback (c, e));
-    });
-  });
 
   //
   // set transition name

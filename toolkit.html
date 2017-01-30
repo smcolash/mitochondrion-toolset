@@ -39,7 +39,7 @@
               <li role="separator" class="divider"></li>
               <li><a id="open-model">Open...</a></li>
               <li><a id="save-model">Save</a></li>
-              <li><a>Save As...</a></li>
+              <li class="disabled TBD"><a>Save As...</a></li>
               <li><a id="close-model">Close</a></li>
               <li role="separator" class="divider"></li>
               <li><a id="file-exit">Exit</a></li>
@@ -285,20 +285,20 @@
       <section class="module">
         <h4>Backlog</h4>
         <ol>
-          <li class="backlog-in-progress">Re-work transition and node editing.</li>
+          <li class="backlog-complete">Re-work transition and node editing.</li>
           <li class="backlog-complete">Integrate contextmenu handling for programmatically added connections.</li>
           <li class="backlog-complete">Top-level context menu to add nodes.</li>
           <li class="backlog-complete">Fix contextmenu bindings.</li>
           <li class="backlog-in-progress">Per-node context menu for delete, edit, rename, ...</li>
           <li class="backlog-in-progress">Per-connection context menu for delete, edit, rename, ...</li>
+          <li>Add top-level state container (border/container).</li>
+          <li>Add internal self-transitions to state container.</li>
           <li>Add code storage to the model and to the editor functionalities.</li>
           <li>How to save the model to the local system?</li>
           <li class="backlog-complete">Generalize the initialization (new, open, close, ...)</li>
-          <li>Add top-level state container (border/container).</li>
-          <li>Add internal self-transitions to state container.</li>
           <li>Encode source text to allow arbitrary content to be held in JSON strings.</li>
           <li class="backlog-complete">figure out how to restart editor correctly to handle muptiple models and views.</li>
-          <li class="backlof-in-progress">Use uuid as id, custom data as readable name.</li>
+          <li class="backlog-in-progress">Use uuid as id, custom data as readable name.</li>
           <li>Create object data model to support actors, states and transitions.</li>
           <li>Create object model to streamline and simplify the internals of the editor.</li>
           <li>Create mapping of object data model to code generation.</li>
@@ -318,7 +318,12 @@
         </ol>
         <h4>Bugs</h4>
         <ol>
-          <li>TBD</li>
+          <li class="backlog-complete">New connections are not correct after initial editing session is
+          reset via opwen/new/close. Specifically, the connection event
+          listener is not working except in the initial state, the reset
+          somehow disables it and manual connections are not complete or
+          correct. A refrest will clear this problem by reinitializing
+          everything.</li>
         </ol>
         <h4>Release Notes</h4>
         <ul>
