@@ -318,12 +318,14 @@
         </ol>
         <h4>Bugs</h4>
         <ol>
-          <li class="backlog-complete">New connections are not correct after initial editing session is
-          reset via opwen/new/close. Specifically, the connection event
-          listener is not working except in the initial state, the reset
-          somehow disables it and manual connections are not complete or
-          correct. A refrest will clear this problem by reinitializing
-          everything.</li>
+          <li class="backlog-complete">New connections are not correct after
+            initial editing session is reset via opwen/new/close.
+            Specifically, the connection event listener is not working except
+            in the initial state, the reset somehow disables it and manual
+            connections are not complete or correct. A refrest will clear this
+            problem by reinitializing everything.</li>
+          <li>Ensure that "return (false);" is at the end of all event
+            callbacks to prevent text selection in the divs.</li>
         </ol>
         <h4>Release Notes</h4>
         <ul>
