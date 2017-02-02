@@ -20,56 +20,57 @@
 
     <style>
 .jtk-demo-canvas {
-    font-family: Arial,sans-serif;
-    height:550px;
-    max-height:700px;
-    border:1px solid #CCC;
+  font-family: Arial,sans-serif;
+  height:550px;
+  max-height:700px;
+  border:1px solid #CCC;
+  position: relative;
 }
 
 .jtk-connector {
-    z-index:9;
+  z-index:9;
 }
 
 .jtk-endpoint {
-    z-index:12;
-    opacity:0.8;
-    cursor:pointer;
+  z-index:12;
+  opacity:0.8;
+  cursor:pointer;
 }
 
 .jtk-overlay {
-    background-color: white;
-    color: #434343;
-    font-weight: 400;
-    padding: 4px;
-    z-index:10;
+  background-color: white;
+  color: #434343;
+  font-weight: 400;
+  padding: 4px;
+  z-index:10;
 }
 
 .jtk-overlay.jtk-hover {
-    color: #434343;
+  color: #434343;
 }
 
 path {
-    cursor:pointer;
+  cursor:pointer;
 }
 
 .selected-mode {
-    color:#E4F013;
+  color:#E4F013;
 }
 
 .connect {
-    width:10px;
-    height:10px;
-    background-color:#f76258;
-    position:absolute;
-    bottom: 13px;
-    right: 5px;
+  width:10px;
+  height:10px;
+  background-color:#f76258;
+  position:absolute;
+  bottom: 13px;
+  right: 5px;
 }
 
 /* header styles */
 
 .drag-handle {
   _border:1px solid black;
-  position: absolute;
+position: absolute;
 }
 
 .drag-handle-top {
@@ -105,79 +106,83 @@ path {
   cursor: ew-resize;
 }
 
-
-
-
 .w {
-    position:absolute;
-    width:80px;
-    height:80px;
-    border:2px solid black;
-    font-size:12px;
-    border-radius:12px;
-    text-align:center;
-    background-color:WhiteSmoke;
+  position:absolute;
+  width:80px;
+  height:80px;
+  border:2px solid #2e6f9a;
+  font-size:12px;
+  border-radius:12px;
+  text-align:center;
+  background-color:WhiteSmoke;
     _opacity:0.7;
-    z-index:10;
-    color:black;
-    cursor:move;
+  z-index:10;
+  color:black;
+  cursor:move;
 }
 
 .w:hover {
-    background-color:#629f8d;
+  background-color:#629f8d;
 }
 
 .group-container {
-    position: absolute;
-    width: 400px;
-    height: 400px;
-    border-radius: 12px;
-    background-color: WhiteSmoke;
-    font-size: 12px;
-    border:2px solid black;
-    cursor:move;
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  border-radius: 12px;
+  background-color: WhiteSmoke;
+  font-size: 12px;
+  border:2px solid #2e6f9a;
+  cursor:move;
 }
 
 .group-container ul {
-    margin-left:25px;
-    padding: 0;
+  margin-left:25px;
+  padding: 0;
 }
 
 .group-container ul li {
-    list-style-type:circle;
-    margin-bottom: 7px;
+  list-style-type:circle;
+  margin-bottom: 7px;
 }
 
 .large {
-    width:600px;
-    height:600px;
+  width:600px;
+  height:600px;
 }
 
 .group-container.collapsed {
-    height:40px;
+  height:40px;
 }
 
 .title {
-    background-color:#ABC1BB;
-    font-size:13px;
-    height:30px;
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-    text-align: center;
-    padding-top: 6px;
+  background-color: #5c96bc;
+  font-size:13px;
+  height:30px;
+  border-top-left-radius: 9px;
+  border-top-right-radius: 9px;
+  text-align: center;
+  padding-top: 6px;
 }
 
 .attribute {
-    background-color:#ABC1BB;
-    font-size:13px;
-    height:20px;
-    text-align: center;
+  background-color: inherit;
+  font-size: inherit;
 }
 
-#container1 { left:20px;top:20px; }
+.line-sep {
+  background-color: inherit;
+  opacity: 0.2;
+  height: 0px;
+  border: 1px solid black;
+  width: 90%;
+  margin-left: 5%;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
 
 .jtk-connector path {
-    stroke-width:2;
+  stroke-width:2;
 }
 
 
@@ -237,18 +242,18 @@ jsPlumb.ready (function () {
   });
 
   // connect some before configuring group
-  j.connect ({source:c1_1, target:c1_2});
-  j.connect ({source:c1_2, target:c1_4});
-  j.connect ({source:c1_4, target:c1_3});
-  j.connect ({source:c1_3, target:c1_1});
+  //j.connect ({source:s1, target:s2});
+  //j.connect ({source:s2, target:s4});
+  //j.connect ({source:s4, target:s3});
+  //j.connect ({source:s3, target:s1});
 
   // NOTE ordering here. we make one draggable before adding it to the
   // group, and we add the other to the group before making it draggable.
   // they should both be constrained to the group extents.
-  j.draggable (c1_1);
-  j.draggable (c1_2);
-  j.draggable (c1_3);
-  j.draggable (c1_4);
+  j.draggable (s1);
+  j.draggable (s2);
+  j.draggable (s3);
+  j.draggable (s4);
 
   j.addGroup ({
     el: container1,
@@ -259,10 +264,10 @@ jsPlumb.ready (function () {
     droppable: false
   });
 
-  j.addToGroup ("one", c1_1);
-  j.addToGroup ("one", c1_2);
-  j.addToGroup ("one", c1_3);
-  j.addToGroup ("one", c1_4);
+  j.addToGroup ("one", s1);
+  j.addToGroup ("one", s2);
+  j.addToGroup ("one", s3);
+  j.addToGroup ("one", s4);
 
 
 
@@ -311,49 +316,73 @@ jsPlumb.ready (function () {
     return (false);
   });
 });
+
+
+
+var save_as_file = function () {
+  alert ('TBD...');
+
+  return;
+}
+
+
   </script>
 
   <body>
-    <div class="jtk-demo-canvas" id="canvas">
+    <div class="container-fluid">
+      <section class="module">
+        <h4>Grouping, Styling and Resizing</h4>
+        <div class="jtk-demo-canvas" id="canvas">
 
-      <div class="group-container" id="container1" group="one">
-        <div class="title">top</div>
-        <div class="drag-handle drag-handle-right"></div>
-        <div class="drag-handle drag-handle-bottom"></div>
+          <div class="group-container" id="container1" group="one" style="left:20px;top:20px;">
+            <div class="title">top
+              <div class="line-sep"></div>
+              <div class="attribute">+ lights on</div>
+              <div class="attribute">- lights off</div>
+            </div>
 
-        <div id="c1_1" class="w" style="left:30px;top:165px">
-          <div class="title">s1</div>
-          <div class="drag-handle drag-handle-top"></div>
-          <div class="drag-handle drag-handle-left"></div>
-          <div class="drag-handle drag-handle-right"></div>
-          <div class="drag-handle drag-handle-bottom"></div>
+            <div class="drag-handle drag-handle-right"></div>
+            <div class="drag-handle drag-handle-bottom"></div>
+
+            <div id="s1" class="w" style="left:30px;top:165px">
+              <div class="title">s1</div>
+              <div class="drag-handle drag-handle-top"></div>
+              <div class="drag-handle drag-handle-left"></div>
+              <div class="drag-handle drag-handle-right"></div>
+              <div class="drag-handle drag-handle-bottom"></div>
+            </div>
+
+            <div id="s2" class="w" style="left:240px;top:165px">
+              <div class="title">s2</div>
+              <div class="drag-handle drag-handle-top"></div>
+              <div class="drag-handle drag-handle-left"></div>
+              <div class="drag-handle drag-handle-right"></div>
+              <div class="drag-handle drag-handle-bottom"></div>
+            </div>
+
+            <div id="s3" class="w" style="left:30px;top:300px">
+              <div class="title">s3</div>
+              <div class="drag-handle drag-handle-top"></div>
+              <div class="drag-handle drag-handle-left"></div>
+              <div class="drag-handle drag-handle-right"></div>
+              <div class="drag-handle drag-handle-bottom"></div>
+            </div>
+
+            <div id="s4" class="w" style="left:240px;top:300px">
+              <div class="title">s4</div>
+              <div class="drag-handle drag-handle-top"></div>
+              <div class="drag-handle drag-handle-left"></div>
+              <div class="drag-handle drag-handle-right"></div>
+              <div class="drag-handle drag-handle-bottom"></div>
+            </div>
+          </div>
+
         </div>
-
-        <div id="c1_2" class="w" style="left:240px;top:165px">
-          <div class="title">s2</div>
-          <div class="drag-handle drag-handle-top"></div>
-          <div class="drag-handle drag-handle-left"></div>
-          <div class="drag-handle drag-handle-right"></div>
-          <div class="drag-handle drag-handle-bottom"></div>
-        </div>
-
-        <div id="c1_3" class="w" style="left:30px;top:300px">
-          <div class="title">s3</div>
-          <div class="drag-handle drag-handle-top"></div>
-          <div class="drag-handle drag-handle-left"></div>
-          <div class="drag-handle drag-handle-right"></div>
-          <div class="drag-handle drag-handle-bottom"></div>
-        </div>
-
-        <div id="c1_4" class="w" style="left:240px;top:300px">
-          <div class="title">s4</div>
-          <div class="drag-handle drag-handle-top"></div>
-          <div class="drag-handle drag-handle-left"></div>
-          <div class="drag-handle drag-handle-right"></div>
-          <div class="drag-handle drag-handle-bottom"></div>
-        </div>
-      </div>
-
+      </section>
+      <section class="module">
+        <h4>File Open... and Save...</h4>
+        <button onclick="save_as_file ();">Save</button>
+      </section>
     </div>
   </body>
 </html>
